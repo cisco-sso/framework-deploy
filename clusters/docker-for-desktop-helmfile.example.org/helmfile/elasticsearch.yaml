@@ -1,0 +1,70 @@
+repositories:
+- name: incubator
+  url: https://kubernetes-charts-incubator.storage.googleapis.com/
+
+releases:
+
+################################################################################
+## Elasticsearch ##########################################################
+################################################################################
+
+#
+# References:
+#   - https://github.com/helm/charts/tree/master/incubator/elasticsearch
+#
+
+- name: elasticsearch
+  namespace: common
+  labels:
+    chart: elasticsearch
+    repo: incubator
+  chart: incubator/elasticsearch
+  version: 1.10.2
+  wait: true
+  installed: true
+  values:
+  - client:
+      antiAffinity: hard
+      heapSize: 2048m
+      priorityClassName: common-critical
+      replicas: 1
+      resources:
+        limits:
+          cpu: 1
+          memory: 2560Mi
+        requests:
+          cpu: 100m
+          memory: 2560Mi
+    cluster:
+      env:
+        MINIMUM_MASTER_NODES: 1
+      additionalJavaOpts: "-Djava.net.preferIPv4Stack=false -Djava.net.preferIPv6Addresses=true"
+    data:
+      # TODO: switch back to "hard" after multinode
+      antiAffinity: hard
+      heapSize: 3072m
+      persistence:
+        size: 16Gi
+      priorityClassName: common-critical
+      replicas: 1
+      resources:
+        limits:
+          cpu: 1
+          memory: 3840Mi
+        requests:
+          cpu: 100m
+          memory: 3840Mi
+    master:
+      antiAffinity: hard
+      heapSize: 1024m
+      persistence:
+        size: 1Gi
+      priorityClassName: common-critical
+      replicas: 1
+      resources:
+        limits:
+          cpu: 1
+          memory: 1536Mi
+        requests:
+          cpu: 100m
+          memory: 1536Mi

@@ -1,0 +1,41 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+
+releases:
+
+################################################################################
+## Kibana ######################################################################
+################################################################################
+
+#
+# References:
+#   - https://github.com/helm/charts/tree/master/stable/kibana
+#
+
+- name: kibana
+  namespace: common
+  labels:
+    chart: kibana
+    repo: stable
+  chart: stable/kibana
+  version: 0.8.0
+  wait: true
+  installed: {{ env "KIBANA_INSTALLED" | default "true" }}
+  values:
+  - env:
+      ELASTICSEARCH_URL: http://elasticsearch-client:9200
+      LOGGING_VERBOSE: "false"
+      SERVER_DEFAULTROUTE: /app/kibana
+      SERVER_PORT: 5601
+    replicaCount: 1
+    service:
+      externalPort: 5601
+      internalPort: 5601
+      type: ClusterIP
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+        - kibana.docker-for-desktop.example.org

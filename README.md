@@ -1,7 +1,6 @@
 # framework-deploy
 
-This repo is a boilerplate deployment repo for use with [kdf](https://kdf.csco.cloud/)
-and [mh](https://github.com/cisco-sso/mh).
+This repo is a boilerplate deployment repo for use with [kdf](https://kdf.csco.cloud/).
 
 
 ## Getting Started

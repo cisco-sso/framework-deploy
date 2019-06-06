@@ -1,0 +1,31 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+
+releases:
+
+################################################################################
+## Chaoskube ###################################################################
+################################################################################
+
+#
+# References:
+#   - https://github.com/helm/charts/tree/master/stable/chaoskube
+#
+
+- name: chaoskube
+  namespace: common
+  labels:
+    chart: chaoskube
+    repo: stable
+  chart: stable/chaoskube
+  version: 0.8.0
+  wait: true
+  installed: {{ env "CHAOSKUBE_INSTALLED" | default "true" }}
+  values:
+  - config:
+      interval: 5m
+      labels: "release!=chaoskube"
+      annotations: ""
+      namespaces: '!kube-system'
+      dryRun: false

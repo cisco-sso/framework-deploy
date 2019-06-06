@@ -1,0 +1,71 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+
+releases:
+
+################################################################################
+## Filebeat ####################################################################
+################################################################################
+
+#
+# References:
+#   - https://github.com/helm/charts/tree/master/stable/filebeat
+#
+
+- name: filebeat
+  namespace: common
+  labels:
+    chart: filebeat
+    repo: stable
+  chart: stable/filebeat
+  version: 0.6.0
+  wait: true
+  installed: {{ env "FILEBEAT_INSTALLED" | default "true" }}
+  values:
+  - rbac:
+      create: true
+    serviceAccount:
+      create: true
+      name: default
+    config:
+      filebeat.config:
+        modules:
+          path: ${path.config}/modules.d/*.yml
+          reload.enabled: false
+        prospectors:
+          path: ${path.config}/prospectors.d/*.yml
+          reload.enabled: false
+      filebeat.prospectors:
+      - enabled: true
+        ignore_older: 168h
+        paths:
+        - /var/log/*.log
+        - /var/log/messages
+        - /var/log/syslog
+        type: log
+      - containers.ids:
+        - '*'
+        ignore_older: 168h
+        processors:
+        - add_kubernetes_metadata:
+            in_cluster: true
+        - drop_event:
+            when:
+              equals:
+                kubernetes.container.name: filebeat
+        type: docker
+      output.elasticsearch:
+        hosts:
+        - http://elasticsearch-client:9200
+      output.file:
+        enabled: false
+      processors:
+      - add_cloud_metadata: null
+      setup.kibana:
+        host: kibana:5601
+    serviceAccount:
+      create: true
+      name: filebeat
+    tolerations:
+    - operator: Exists
