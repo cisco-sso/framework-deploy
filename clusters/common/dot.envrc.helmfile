@@ -99,3 +99,12 @@ case ${CLUSTER_NAME} in
   ;;
 esac
 export KUBECONFIG=${KUBECONFIG_LOCAL}
+
+
+#################################################
+# Local Helm Tiller
+#
+# ref: https://github.com/rimusz/helm-tiller#tiller-start-examples
+export HELM_HOST=127.0.0.1:44134
+export TILLER_NAMESPACE=tillerless
+export HELM_TILLER_LOGS_DIR=${PWD}/tiller.log

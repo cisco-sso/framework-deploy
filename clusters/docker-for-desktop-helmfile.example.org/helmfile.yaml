@@ -1,5 +1,6 @@
 helmDefaults:
   tillerless: true
+  tillerNamespace: common
 
 helmfiles:
   - helmfile/chaoskube.yaml

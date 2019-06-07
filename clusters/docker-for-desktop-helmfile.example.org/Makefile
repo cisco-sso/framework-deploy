@@ -11,6 +11,5 @@ helm:
 
 .PHONY: helmfile
 helmfile:
-	killall tiller || true
-	helm tiller start-ci
-	. .envrc && helmfile apply
+	. .envrc && helm tiller start-ci common
+	. .envrc && helmfile sync

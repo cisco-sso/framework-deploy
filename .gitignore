@@ -8,3 +8,4 @@ tmp/
 .awake.log
 rtp10_roles
 clusters/*/bin
+*.log
