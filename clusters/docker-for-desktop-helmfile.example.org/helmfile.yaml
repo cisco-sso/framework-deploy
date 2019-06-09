@@ -1,0 +1,16 @@
+helmDefaults:
+  tillerless: true
+  tillerNamespace: common
+
+helmfiles:
+  - helmfile/chaoskube.yaml
+  - helmfile/elasticsearch-exporter.yaml
+  - helmfile/elasticsearch.yaml
+  - helmfile/filebeat.yaml
+  - helmfile/grafana.yaml
+  - helmfile/kibana.yaml
+  - helmfile/nginx-ingress.yaml
+  - helmfile/prometheus.yaml
+  - helmfile/raw-cluster-role-bindings.yaml
+  - helmfile/raw-limit-ranges.yaml
+  - helmfile/raw-priority-classes.yaml

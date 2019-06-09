@@ -1,0 +1,31 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+
+releases:
+
+################################################################################
+## Elasticsearch Exporter ######################################################
+################################################################################
+
+#
+# References:
+#   - https://github.com/helm/charts/tree/master/stable/elasticsearch-exporter
+#
+
+- name: elasticsearch-exporter
+  namespace: common
+  labels:
+    chart: elasticsearch-exporter
+    repo: stable
+  chart: stable/elasticsearch-exporter
+  version: 0.2.0
+  wait: true
+  installed: {{ env "ELASTICSEARCH_EXPORTER_INSTALLED" | default "true" }}
+  values:
+  - es:
+      uri: http://elasticsearch-client:9200
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9108"
